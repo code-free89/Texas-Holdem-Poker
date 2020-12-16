@@ -1,4 +1,5 @@
 var questions;
+var authtoken;
 function getCookie(name) {
     // Split cookie string and get all individual name=value pairs in an array
     var cookieArr = document.cookie.split(";");
@@ -21,19 +22,26 @@ function getCookie(name) {
     
     // Return null if not found
     return null;
-  }
+}
+function eraseCookie(name) {   
+    document.cookie = name + "=" + ("")  + "" + "; path=/";
+}
 
 $.ready = function() {
+    authtoken = getCookie("authToken");
+    if(!authtoken){
+        window.location.replace("../../index.html");
+    }
     questions = getCookie("personalityQuestions");
     console.log(questions[0]);
     for(i in questions) {
         console.log(questions[i]);
-        var htmlstr = "<br><span class='h4'>" + questions[i] + "</span>";
+        var htmlstr = "<br><span class='h4 mb-3'>" + questions[i] + "</span>";
         htmlstr = htmlstr + "<div class='buttongroup'> " +
-        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>Very true for me</label>" +
-        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>Somewhat true for me</label>" +
-        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>Somewhat false for me</label>" +
-        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>Very false for me</label></div>";
+        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Very true for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Somewhat true for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Somewhat false for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
+        "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Very false for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></div>";
         $("#survey_questions").append(htmlstr);
     }
     $("#survey_questions").append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class='btn btn-primary' id='result_bt' type='button' onclick='getresult()' value='Next'><br>");
@@ -50,10 +58,12 @@ function setCookie(name,value,days) {
 function getresult() {
     var resultstr="";
     for(i in questions) {
-        if(i < 10)
-            resultstr = resultstr + "\"personalityQ0" + i + "\":";
+        var ind = parseInt(i) + 1;
+        if(i < 10) {
+            resultstr = resultstr + '"personalityQ0' + ind + '":';
+        }
         else
-            resultstr = resultstr + "\"personalityQ" + i + "\":";
+            resultstr = resultstr + '"personalityQ' + ind + '":';
         var ele = document.getElementsByName("rad_ans"+i);
         for(j = 0; j < ele.length; j++) { 
             if(ele[j].checked) {
@@ -66,6 +76,7 @@ function getresult() {
             return;
         }
     }
+    setCookie("authToken", authtoken);
     setCookie("pqAnswer", resultstr);
     window.location.replace("../../pages/final.html");
     console.log(resultstr);

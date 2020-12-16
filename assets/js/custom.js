@@ -1,3 +1,6 @@
+$.ready= function() {
+    setCookie("survey", "0");
+}
 $("#bt-signup").click(function(){
     var settings = {
         "url": "https://da987tkpjg.execute-api.us-east-1.amazonaws.com/PROD",
@@ -82,4 +85,7 @@ function setCookie(name,value,days) {
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function eraseCookie(name) {   
+    document.cookie = name + "=" + ("")  + "" + "; path=/";
 }

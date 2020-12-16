@@ -35,9 +35,9 @@ function getCookie(name) {
 }
 
 $.ready= function() {
-  console.log("init()");
-  if(!getCookie("authToken"))
+  if(getCookie("survey") != "0")
     window.location.replace("../index.html");
+  console.log("init()");
   $("#boardcard1").hide();
   $("#boardcard2").hide();
   $("#boardcard3").hide();
@@ -145,7 +145,7 @@ function call_bt_click() {
         }
     }),
   };
-
+  console.log(settings);
   $.ajax(settings).done(function (response) {
     console.log(response);
     if(response['result'] == "Success") {

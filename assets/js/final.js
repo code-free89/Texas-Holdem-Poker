@@ -1,4 +1,5 @@
 var questions;
+var authtoken;
 function getCookie(name) {
     // Split cookie string and get all individual name=value pairs in an array
     var cookieArr = document.cookie.split(";");
@@ -23,7 +24,24 @@ function getCookie(name) {
     return null;
   }
 
+  function eraseCookie(name) {   
+    document.cookie = name + "=" + ("")  + "" + "; path=/";
+}
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
 $.ready = function() {
+    authtoken = getCookie("authToken");
+    setCookie("survey", "1");
+    if(!authtoken){
+        window.location.replace("../../index.html");
+    }
     questions = getCookie("PokerExperienceQuestions");
     for(i in questions) {
         var htmlstr = "<br><span class='h4'>" + questions[i]["Number"] + " " + questions[i]["Question"] + "</span>";
@@ -39,14 +57,15 @@ $.ready = function() {
 function getresult() {
     var resultstr = getCookie('pqAnswer');
     for(i in questions) {
+        var ind = parseInt(i) + 1;
         if(i < 10)
-            resultstr = resultstr + "\"pokerExperienceQ0" + i + "\":\"";
+            resultstr = resultstr + '"pokerExperienceQ0' + ind + '":"';
         else
-            resultstr = resultstr + "\"pokerExperienceQ" + i + "\":\"";
+            resultstr = resultstr + '"pokerExperienceQ' + ind + '":"';
         var ele = document.getElementsByName("rad_ans"+i);
         for(j = 0; j < ele.length; j++) { 
             if(ele[j].checked) {
-                resultstr = resultstr + questions[i]["Responses"][j][0] + "\",";
+                resultstr = resultstr + questions[i]["Responses"][j][0] + '",';
                 break;
             }
         }
@@ -60,24 +79,21 @@ function getresult() {
 }
 
 function sendRequest(resultstr) {
+    console.log(resultstr);
+    resultstr = '{"body":{"participantID":' + getCookie('participantID') + ',"participantPassword":"' + getCookie('participantPassword') + '","authToken":' + authtoken + ',' + resultstr + '}}';
+    console.log(resultstr);
     var settings = {
-        "url": "https://da987tkpjg.execute-api.us-east-1.amazonaws.com/PROD",
+        "url": "https://zucftopo4g.execute-api.us-east-1.amazonaws.com/PROD",
         "method": "POST",
         "timeout": 0,
         "headers": {
           "Content-Type": "application/json"
         },
-        "data": JSON.stringify({
-            "body":{
-                "participantID": getCookie('participantID'),
-                "participantPassword": getCookie('participantPassword'),
-                resultstr
-            }
-        }),
+        "data": resultstr,
     };
     console.log(settings);
     $.ajax(settings).done(function (response) {
-        console.log(response['result']);
+        console.log(response);
         if(response['result'] == "Success")
         {
             window.alert("Success");
