@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" style="background-color: rgb(71, 71, 71);">
+<head>
+    <title>Poker Game</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../assets/css/poker.css" type="text/css">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css">
+    <script charset="UTF-8" src="../assets/js/jquery.min.js"></script>
+    <script charset="UTF-8" src="../assets/js/poker.js"></script>
+    <link rel="shortcut icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <span style="font-size: 30px; color:rgb(69, 173, 8)">Your participantID is :</span>
+    <span id="partID" style="font-size: 30px; color:rgb(175, 136, 7);"></span>
+    <span>&nbsp;&nbsp;&nbsp;Write this number down if you need to leave and come back to finish the game later.</span>
+    <div id="poker_table" class="poker_table">
+        <img src="../assets/images/poker_table.png" alt="">
+    </div>
+    <div id="comseat">
+        <img src="../assets/images/cardback.png" id="comcard1" style="width: 60px; border-radius: 4px;">
+        <img src="../assets/images/cardback.png" id="comcard2" style="width: 60px; border-radius: 4px;">
+    </div>
+    <div id="companel">
+        <span>Opponent</span><br>
+        <span id="comchips">$0</span>
+    </div>
+    <div id="combet">
+        Bet:$1000
+    </div>
+    <div id="playerseat">
+        <img src="../assets/images/cardback.png" id="playercard1" style="width: 60px; border-radius: 4px;">
+        <img src="../assets/images/cardback.png" id="playercard2" style="width: 60px; border-radius: 4px;">
+    </div>
+    <div id="playerpanel">
+        <span id="playername">John Dae</span><br>
+        <span id="playerchips">$0</span>
+    </div>
+    <div id="playerbet">
+        Bet:$1000
+    </div>
+    <div id="tpotpanel">
+        <span>Total pot :&nbsp;</span>
+        <span id="total-pot">0</span>
+    </div>
+    <div id="decisiongroup">
+        <input class="btn" type="button" id="bt_fold" onclick="fold_bt_click()" value="FOLD">
+        <input class="btn" type="button" id="bt_call" onclick="call_bt_click()" value="CALL">
+        <input class="btn" type="button" id="bt_raise" onclick="raise_bt_click()" value="RAISE">
+    </div>
+    <input class="btn" type="button" id="bt_nexthand" onclick="nexthand_bt_click()" value="Next Hand">
+    <img src="" id="boardcard1" style="position:absolute; left: 245px; top: 207px; width: 45px; border-radius: 4px;">
+    <img src="" id="boardcard2" style="position:absolute; left: 297px; top: 207px; width: 45px; border-radius: 4px;">
+    <img src="" id="boardcard3" style="position:absolute; left: 349px; top: 207px; width: 45px; border-radius: 4px;">
+    <img src="" id="boardcard4" style="position:absolute; left: 401px; top: 207px; width: 45px; border-radius: 4px;">
+    <img src="" id="boardcard5" style="position:absolute; left: 453px; top: 207px; width: 45px; border-radius: 4px;">
+    <span style="font-size: 30px; color: rgb(255, 255, 255); position: absolute; left: 750px; top: 45px;">Rank of Poker Hands</span>
+    <img src="../assets/images/rule.png" style="position: absolute; left: 780px; top : 90px; height: 700px">
+    <span id="winpanel">Opponent won pot of $xxxx</span>
+</body>
+</html>
