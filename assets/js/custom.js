@@ -1,5 +1,6 @@
 $.ready= function() {
     setCookie("survey", "0");
+    eraseCookie("authToken");
 }
 $("#bt-signup").click(function(){
     var settings = {

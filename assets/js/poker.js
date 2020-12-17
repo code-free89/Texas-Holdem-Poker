@@ -164,7 +164,7 @@ function call_bt_click() {
       player_start_chips = player_end_chips;
       $("#bt_nexthand").show(100);
     } else {
-      alert(response);
+      alert(response['result']);
     }
   });
 }
@@ -229,7 +229,7 @@ function raise_bt_click() {
       player_start_chips = player_end_chips;
       $("#bt_nexthand").show(100);
     } else {
-      alert(response);
+      alert(response['result']);
     }
   });
 }
@@ -284,6 +284,7 @@ function fold_bt_click()
       player_start_chips = player_end_chips;
       $("#bt_nexthand").show(100);
     } else {
+      alert(response['result']);
     }
   });
 }

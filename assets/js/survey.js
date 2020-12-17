@@ -37,7 +37,7 @@ $.ready = function() {
     for(i in questions) {
         console.log(questions[i]);
         var htmlstr = "<br><span class='h4 mb-3'>" + questions[i] + "</span>";
-        htmlstr = htmlstr + "<div class='buttongroup'> " +
+        htmlstr = htmlstr + "<div class='buttongroup' style='margin-top:5px'>" +
         "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Very true for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
         "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Somewhat true for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>" +
         "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;Somewhat false for me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>" +

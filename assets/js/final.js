@@ -45,13 +45,13 @@ $.ready = function() {
     questions = getCookie("PokerExperienceQuestions");
     for(i in questions) {
         var htmlstr = "<br><span class='h4'>" + questions[i]["Number"] + " " + questions[i]["Question"] + "</span>";
-        htmlstr = htmlstr + "<div class='buttongroup'> ";
+        htmlstr = htmlstr + "<div class='buttongroup' style='margin-top:5px'>";
         for(j = 0; j < questions[i]["Responses"].length; j ++) {
-            htmlstr = htmlstr + "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>" + questions[i]["Responses"][j] + "</label><br>";
+            htmlstr = htmlstr + "<input name='rad_ans" + i + "' type='radio'><label for='rad_ans'>&nbsp;&nbsp;&nbsp;&nbsp;" + questions[i]["Responses"][j] + "</label><br>";
         }
         $("#final_questions").append(htmlstr);
     }
-    $("#final_questions").append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class='btn btn-primary' id='result_bt' type='button' onclick='getresult()' value='Get Result'><br>");
+    $("#final_questions").append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class='btn btn-primary' id='result_bt' type='button' onclick='getresult()' value='Submit'><br>");
 }
 
 function getresult() {
@@ -96,7 +96,7 @@ function sendRequest(resultstr) {
         console.log(response);
         if(response['result'] == "Success")
         {
-            window.alert("Success");
+            window.location.replace("../../pages/thank.html");
         }
         else
             window.alert(response['result']);
