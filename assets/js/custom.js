@@ -1,6 +1,6 @@
 $.ready= function() {
     setCookie("survey", "0");
-    eraseCookie("authToken");
+    // eraseCookie("authToken");
 }
 $("#bt-signup").click(function(){
     var settings = {
@@ -38,7 +38,7 @@ $("#bt-signup").click(function(){
             setCookie('lastName', response['lastName']);
             setCookie('StartingNumberChipsPlayer', response['StartingNumberChipsPlayer']);
             setCookie('StartingNumberChipsComputer', response['StartingNumberChipsComputer']);
-            setCookie('authToken', response['authToken']);
+            setCookie('authToken', parseInt(response['authToken']));
             setCookie('Hands', JSON.stringify(response['Hands']));
             setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
             setCookie('personalityQuestions', JSON.stringify(response['PersonalityQuestions']));
@@ -71,10 +71,13 @@ $("#bt-login").click(function(){
             setCookie('participantPassword', document.getElementById('password').value);
             setCookie('firstName', response['firstName']);
             setCookie('lastName', response['lastName']);
-            setCookie('StartingNumberChips', response['StartingNumberChips']);
-            setCookie('authToken', response['authToken']);
+            setCookie('StartingNumberChipsPlayer', response['StartingNumberChipsPlayer']);
+            setCookie('StartingNumberChipsComputer', response['StartingNumberChipsComputer']);
+            setCookie('authToken', parseInt(response['authToken']));
             setCookie('Hands', JSON.stringify(response['Hands']));
             setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
+            setCookie('personalityQuestions', JSON.stringify(response['PersonalityQuestions']));
+            setCookie('PokerExperienceQuestions', JSON.stringify(response['PokerExperienceQuestions']));
             window.location.replace("pages/poker.html");
         }
         else

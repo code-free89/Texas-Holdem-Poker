@@ -52,6 +52,8 @@ $.ready= function() {
   com_end_chips = com_start_chips;
   player_end_chips = player_start_chips;
   hand_index = parseInt(getCookie('lastHand')) - 1;
+  if(hand_index >= hands.length)
+    window.location.replace("../pages/survey-page.html");
   initialize_bet();
   new_round();
 }
@@ -185,16 +187,16 @@ function call_bt_click() {
     },
     "data": JSON.stringify({
         "body":{
-            "participantID":getCookie("participantID"),
-            "participantPassword":getCookie("participantPassword"),
-            "handNumber": hand_index,
-            "playersChipsAtStartOfHand": player_start_chips,
-            "playersChipsAtEndOfHand": player_end_chips,
-            "playersWager": player_bet_chips,
-            "playersAction": "Call",
-            "computersChipsAtStartOfHand": com_start_chips,
-            "computersChipsAtEndOfHand": com_end_chips,
-            "authToken": getCookie("authToken"),
+          "participantID":parseInt(getCookie("participantID")),
+          "participantPassword":getCookie("participantPassword"),
+          "handNumber": hand_index,
+          "playersChipsAtStartOfHand": player_start_chips,
+          "playersChipsAtEndOfHand": player_end_chips,
+          "playersWager": player_bet_chips,
+          "playersAction": "Call",
+          "computersChipsAtStartOfHand": com_start_chips,
+          "computersChipsAtEndOfHand": com_end_chips,
+          "authToken": getCookie("authToken"),
         }
     }),
   };
@@ -276,7 +278,7 @@ function raise_bt_click() {
     },
     "data": JSON.stringify({
         "body":{
-            "participantID":getCookie("participantID"),
+            "participantID":parseInt(getCookie("participantID")),
             "participantPassword":getCookie("participantPassword"),
             "handNumber": hand_index,
             "playersChipsAtStartOfHand": player_start_chips,
@@ -330,7 +332,7 @@ function fold_bt_click()
       },
       "data": JSON.stringify({
           "body":{
-              "participantID":getCookie("participantID"),
+              "participantID":parseInt(getCookie("participantID")),
               "participantPassword":getCookie("participantPassword"),
               "handNumber": hand_index,
               "playersChipsAtStartOfHand": player_start_chips,
