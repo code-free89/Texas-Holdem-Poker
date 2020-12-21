@@ -47,22 +47,42 @@ $.ready= function() {
   $("#partID").text(getCookie("participantID"));
   $("#playername").text(getCookie("firstName") + " " + getCookie("lastName"));
   hands = getCookie('Hands');
-  STARTING_CHIPS = parseInt(getCookie('StartingNumberChips'));
-  com_start_chips = STARTING_CHIPS;
-  player_start_chips = STARTING_CHIPS;
+  com_start_chips = parseInt(getCookie('StartingNumberChipsComputer'));
+  player_start_chips = parseInt(getCookie('StartingNumberChipsPlayer'));
   com_end_chips = com_start_chips;
   player_end_chips = player_start_chips;
+  hand_index = parseInt(getCookie('lastHand')) - 1;
   initialize_bet();
-  LAST_NUMBER_OF_HANDS = parseInt(getCookie('lastHand'));
   new_round();
 }
 
 function initialize_bet() {
+  $("bt_call").disabled = false;
+  $("bt_raise").disabled = false;
   com_bet_chips = parseInt(hands[hand_index]['computerBet']);
   player_bet_chips = 0;
   total_pot = parseInt(hands[hand_index]['chipsInPot']);
-  com_end_chips = com_end_chips - com_bet_chips - total_pot / 2;
+  com_end_chips = com_end_chips - total_pot / 2;
+  if(com_end_chips < 0) {
+    total_pot = total_pot - com_end_chips * 2;
+    com_bet_chips = 0;
+  }
+  com_end_chips = com_end_chips - com_bet_chips;
+  if(com_end_chips < 0) {
+    com_bet_chips = com_bet_chips + com_end_chips;
+    com_end_chips = 0;
+  }  
   player_end_chips = player_end_chips - total_pot / 2;
+  if(player_end_chips < 0) {
+    total_pot = total_pot - player_end_chips * 2;
+    com_end_chips -= player_end_chips;
+    player_end_chips = 0;
+  }
+  if(player_end_chips == 0) {
+    $("bt_call").disabled = true;
+    $("bt_raise").disabled = true;    
+  }
+
   $("#comchips").text("$" + com_end_chips);
   $("#playerchips").text("$" + player_end_chips);
   $("#total-pot").text(total_pot);
@@ -72,7 +92,23 @@ function initialize_bet() {
 
 function show_decision()
 {
-  $("#decisiongroup").show(100);
+  if(player_end_chips == 0 || com_end_chips == 0) {
+    if(hands[hand_index]["winner"] == "computer") {
+      $("#winpanel").text("You are busted!");
+      $("boardcard5").show(100);
+      $("#winpanel").show(200);
+      $("#bt_nexthand").show(100);
+      com_end_chips = com_end_chips + total_pot;
+    } else {
+      $("#winpanel").text("You won the game!");
+      $("boardcard5").show(100);
+      $("#winpanel").show(200);
+      $("#bt_nexthand").show(100);
+      player_end_chips += total_pot;
+    }
+  } else {
+    $("#decisiongroup").show(100);
+  }
 }
 
 function show_comcards() {
@@ -107,20 +143,37 @@ function new_round()
 }
 
 function call_bt_click() {
-  $("#boardcard5").show(1000);
-  player_end_chips = player_end_chips - com_bet_chips + player_bet_chips;
-  player_bet_chips = com_bet_chips;
-  total_pot = total_pot + com_bet_chips + player_bet_chips;
+  $("#boardcard5").show(100);
+  if(com_bet_chips > player_end_chips) {
+    player_bet_chips = player_end_chips;
+    com_end_chips = com_end_chips + com_bet_chips - player_bet_chips;
+    com_bet_chips = player_bet_chips;
+    player_end_chips = 0;
+    total_pot = total_pot + com_bet_chips + player_end_chips;
+  }
+  else
+  {
+    player_end_chips = player_end_chips - com_bet_chips + player_bet_chips;
+    player_bet_chips = com_bet_chips;
+    total_pot = total_pot + com_bet_chips + player_bet_chips;
+  }
   $("#total-pot").text(total_pot);
-  $("#playerchips").text("$" + player_end_chips);
+  if(player_end_chips == 0)
+    $("#playerchips").text("All in");
+  else
+    $("#playerchips").text("$" + player_end_chips);
   $("#combet").text("Bet:$" + com_bet_chips);
   $("#playerbet").text("Bet:$" + player_bet_chips);
   if(hands[hand_index]["winner"] == "computer") {
     $("#winpanel").text("Opponent won pot of $" + total_pot);
+    if(player_end_chips == 0)
+      $("#winpanel").text("You are busted!");
     com_end_chips = com_end_chips + total_pot;
   }
   else {
     $("#winpanel").text(getCookie("firstName") + " " + getCookie("lastName") + " won pot of $" + total_pot);
+    if(com_end_chips == 0)
+      $("#winpanel").text("You won the game!");
     player_end_chips = player_end_chips + total_pot;
   }
   var settings = {
@@ -145,9 +198,7 @@ function call_bt_click() {
         }
     }),
   };
-  console.log(settings);
   $.ajax(settings).done(function (response) {
-    console.log(response);
     if(response['result'] == "Success") {
       show_comcards();
       $("#decisiongroup").hide();
@@ -169,23 +220,51 @@ function call_bt_click() {
   });
 }
 function raise_bt_click() {
+  if(com_bet_chips >= player_end_chips) {
+    alert("You can't raise!");
+    return;
+  }
   $("#boardcard5").show(100);
-  player_end_chips = player_end_chips - (com_bet_chips - player_bet_chips) * 2;
-  player_bet_chips = com_bet_chips + com_bet_chips - player_bet_chips;
-  com_end_chips = com_end_chips - player_bet_chips + com_bet_chips;
-  com_bet_chips = player_bet_chips;
-  total_pot = total_pot + com_bet_chips + player_bet_chips;
+  if(player_end_chips < com_bet_chips * 2) {
+    com_end_chips = com_end_chips - player_end_chips + com_bet_chips;
+    com_bet_chips = player_end_chips;
+    total_pot += com_bet_chips * 2;
+    player_end_chips = 0;
+    player_bet_chips = com_bet_chips;
+  } else if(com_end_chips < com_bet_chips) {
+    player_end_chips = player_end_chips - com_end_chips;
+    com_bet_chips = com_bet_chips + com_end_chips;
+    player_bet_chips = com_bet_chips;
+    total_pot = total_pot + com_bet_chips + player_bet_chips;
+    com_end_chips = 0;
+  } else {
+    player_end_chips = player_end_chips - (com_bet_chips - player_bet_chips) * 2;
+    player_bet_chips = com_bet_chips + com_bet_chips - player_bet_chips;
+    com_end_chips = com_end_chips - player_bet_chips + com_bet_chips;
+    com_bet_chips = player_bet_chips;
+    total_pot = total_pot + com_bet_chips + player_bet_chips;
+  }
   $("#total-pot").text(total_pot);
-  $("#playerchips").text("$" + player_end_chips);
+  if(player_bet_chips == 0)
+    $("#playerchips").text("All in");
+  else
+    $("#playerchips").text("$" + player_end_chips);
   $("#combet").text("Bet:$" + com_bet_chips);
   $("#playerbet").text("Bet:$" + player_bet_chips);
-  $("#comchips").text(com_end_chips);
+  if(com_end_chips == 0)
+    $("#comchips").text("All in");
+  else
+    $("#comchips").text("$" + com_end_chips);
   if(hands[hand_index]["winner"] == "computer") {
     $("#winpanel").text("Opponent won pot of $" + total_pot);
     com_end_chips = com_end_chips + total_pot;
+    if(player_end_chips == 0)
+      $("#winpanel").text("You are busted!");
   }
   else {
     $("#winpanel").text(getCookie("firstName") + " " + getCookie("lastName") + " won pot of $" + total_pot);
+    if(com_end_chips == 0)
+      $("#winpanel").text("You won the game!");
     player_end_chips = player_end_chips + total_pot;
   }
   var settings = {
@@ -212,7 +291,6 @@ function raise_bt_click() {
   };
 
   $.ajax(settings).done(function (response) {
-    console.log(response);
     if(response['result'] == "Success") {
       show_comcards();
       $("#decisiongroup").hide();
@@ -268,7 +346,6 @@ function fold_bt_click()
   
   $.ajax(settings).done(function (response) {
     show_comcards();
-    console.log(response);
     if(response['result'] == "Success") {
       $("#decisiongroup").hide();
       $("#winpanel").show();
@@ -289,14 +366,18 @@ function fold_bt_click()
   });
 }
 function nexthand_bt_click() {
-  $("#bt_nexthand").hide();
-  $("boardcard5").hide();
-  $("#winpanel").hide();
-  hand_index ++;
-  if(hand_index < hands.length) {
-    initialize_bet();
-    new_round();
-  } else {
+  if(player_end_chips == 0 || com_end_chips == 0) {
     window.location.replace("../pages/survey-page.html");
+  } else {
+    $("#bt_nexthand").hide();
+    $("boardcard5").hide();
+    $("#winpanel").hide();
+    hand_index ++;
+    if(hand_index < hands.length) {
+      initialize_bet();
+      new_round();
+    } else {
+      window.location.replace("../pages/survey-page.html");
+    }
   }
 }

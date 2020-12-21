@@ -21,8 +21,10 @@ $("#bt-signup").click(function(){
                 "city":document.getElementById('city').value,
                 "state":document.getElementById('state').value,
                 "zip":document.getElementById('zipcode').value,
+                "email":document.getElementById('email').value,
+                "phone":document.getElementById('phone').value,
                 "agreement2SignatureName":document.getElementById('signname').value,
-                "agreement2SignatureDate":document.getElementById('signdate').value,
+                "agreement2SignatureDate":document.getElementById('signdate').value
             }
         }),
     };
@@ -34,10 +36,11 @@ $("#bt-signup").click(function(){
             setCookie('participantPassword', document.getElementById('password2').value);
             setCookie('firstName', response['firstName']);
             setCookie('lastName', response['lastName']);
-            setCookie('StartingNumberChips', response['StartingNumberChips']);
+            setCookie('StartingNumberChipsPlayer', response['StartingNumberChipsPlayer']);
+            setCookie('StartingNumberChipsComputer', response['StartingNumberChipsComputer']);
             setCookie('authToken', response['authToken']);
             setCookie('Hands', JSON.stringify(response['Hands']));
-            setCookie('lastHand', response['lastHandPlayed']);
+            setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
             setCookie('personalityQuestions', JSON.stringify(response['PersonalityQuestions']));
             setCookie('PokerExperienceQuestions', JSON.stringify(response['PokerExperienceQuestions']));
             window.location.replace("pages/poker.html");
@@ -71,7 +74,7 @@ $("#bt-login").click(function(){
             setCookie('StartingNumberChips', response['StartingNumberChips']);
             setCookie('authToken', response['authToken']);
             setCookie('Hands', JSON.stringify(response['Hands']));
-            setCookie('lastHand', response['lastHandPlayed']);
+            setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
             window.location.replace("pages/poker.html");
         }
         else

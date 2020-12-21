@@ -31,8 +31,8 @@
                                     </a>
                                     <div class="row align-items-center">
                                         <p class="col-7 text-muted h4 pt-2">Please read terms and conditions before registration:</p>
-                                        <a href="#" data-toggle="modal" data-target="#show-terms" class="text-success col-2">View</a>
-                                        <a class="col-2 text-success" href="public/Poker Game Consent Form.pdf" download="Poker Game Consent Form.pdf">Download</a>
+                                        <a href="#" data-toggle="modal" data-target="#show-terms" class="text-success h4 col-2">View</a>
+                                        <a class="col-2 text-success h4" href="public/Poker Game Consent Form.pdf" download="Poker Game Consent Form.pdf">Download</a>
                                     </div>
                                 </div>
 
@@ -44,6 +44,10 @@
 
                                             <form>
                                                 <div class="form-group mb-1 row align-items-center">
+                                                    <label for="email" class='col-sm-4 m-0'>Email</label>
+                                                    <input class="form-control col-sm-8" type="email" id="email" placeholder="Enter your email" required>
+                                                </div>
+                                                <div class="form-group mb-1 row align-items-center">
                                                     <label for="firstname" class='col-sm-4 m-0'>First Name</label>
                                                     <input class="form-control col-sm-8" type="text" id="firstname" placeholder="Enter your first name" required>
                                                 </div>
@@ -54,6 +58,10 @@
                                                 <div class="form-group mb-1 row align-items-center">
                                                     <label for="password2" class='col-sm-4 m-0'>Password</label>
                                                     <input class="form-control col-sm-8" type="password" required id="password2" minlength="6" placeholder="Enter your password" required>
+                                                </div>
+                                                <div class="form-group mb-1 row align-items-center">
+                                                    <label for="phone" class='col-sm-4 m-0'>Phone</label>
+                                                    <input class="form-control col-sm-8" type="text" id="phone" placeholder="Enter your phone number" required>
                                                 </div>
                                                 <div class="form-group mb-1 row align-items-center">
                                                     <label for="address" class='col-sm-4 m-0'>Address</label>
@@ -83,7 +91,7 @@
                                                     <div class="custom-control custom-checkbox pt-1">
                                                         <input type="checkbox" class="custom-control-input" id="checkbox-signup" required>
                                                         <button class="btn btn-success btn-md float-md-right" type="button" id="bt-signup"> Register </button>
-                                                        <label class="custom-control-label" for="checkbox-signup">I accept&nbsp;<a href="#" data-toggle="modal" data-target="#show-terms" class="text-success">Terms and Conditions</a>
+                                                        <label class="custom-control-label" for="checkbox-signup">I accept&nbsp;<a href="#" data-toggle="modal" data-target="#show-terms" class="text-success">Informed Consent</a>
                                                         </label>
                                                     </div>
                                                 </div>
