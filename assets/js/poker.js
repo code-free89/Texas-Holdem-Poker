@@ -10,6 +10,7 @@ var com_start_chips, player_start_chips;
 var bet_amout = 1000;
 var total_pot;
 var showcount = 0;
+var starttime, endtime;
 function getCookie(name) {
   // Split cookie string and get all individual name=value pairs in an array
   var cookieArr = document.cookie.split(";");
@@ -90,10 +91,14 @@ function initialize_bet() {
   $("#total-pot").text(total_pot);
   $("#combet").text("Bet:$" + com_bet_chips);
   $("#playerbet").text("Bet:$" + player_bet_chips);
+
+  $('#bt_raise').text("RAISE $" + com_bet_chips * 2);
+  console.log($('#bt_raise').text());
 }
 
 function show_decision()
 {
+  starttime = new Date();
   if(player_end_chips == 0 || com_end_chips == 0) {
     if(hands[hand_index]["winner"] == "computer") {
       $("#winpanel").text("You are busted!");
@@ -145,6 +150,9 @@ function new_round()
 }
 
 function call_bt_click() {
+  endtime = new Date();
+  var timeDiff = endtime - starttime;
+  console.log(timeDiff);
   $("#boardcard5").show(100);
   if(com_bet_chips > player_end_chips) {
     player_bet_chips = player_end_chips;
@@ -197,6 +205,7 @@ function call_bt_click() {
           "computersChipsAtStartOfHand": com_start_chips,
           "computersChipsAtEndOfHand": com_end_chips,
           "authToken": getCookie("authToken"),
+          "ResponseTimeMilliseconds": parseInt(timeDiff),
         }
     }),
   };
@@ -222,6 +231,9 @@ function call_bt_click() {
   });
 }
 function raise_bt_click() {
+  endtime = new Date();
+  var timeDiff = endtime - starttime;
+  console.log(timeDiff);
   if(com_bet_chips >= player_end_chips) {
     alert("You can't raise!");
     return;
@@ -288,6 +300,7 @@ function raise_bt_click() {
             "computersChipsAtStartOfHand": com_start_chips,
             "computersChipsAtEndOfHand": com_end_chips,
             "authToken": getCookie("authToken"),
+            "ResponseTimeMilliseconds": parseInt(timeDiff),
         }
     }),
   };
