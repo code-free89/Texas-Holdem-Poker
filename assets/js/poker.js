@@ -23,10 +23,6 @@ function getCookie(name) {
       and compare it with the given string */
       if(name == cookiePair[0].trim()) {
           // Decode the cookie value and return
-          if(name == "Hands")
-          {
-            return JSON.parse(cookiePair[1]);
-          }
           return decodeURIComponent(cookiePair[1]);
       }
   }
@@ -47,7 +43,8 @@ $.ready= function() {
   $("#bt_nexthand").hide();
   $("#partID").text(getCookie("participantID"));
   $("#playername").text(getCookie("firstName") + " " + getCookie("lastName"));
-  hands = getCookie('Hands');
+  hands = JSON.parse(localStorage.getItem('Hands'));
+  console.log(hands);
   com_start_chips = parseInt(getCookie('StartingNumberChipsComputer'));
   player_start_chips = parseInt(getCookie('StartingNumberChipsPlayer'));
   com_end_chips = com_start_chips;
@@ -328,6 +325,8 @@ function raise_bt_click() {
 }
 function fold_bt_click()
 {
+  endtime = new Date();
+  var timeDiff = endtime - starttime;
   $("#boardcard5").show(100);
   total_pot = total_pot + com_bet_chips + player_bet_chips;
   com_end_chips = com_end_chips + total_pot;
@@ -355,6 +354,7 @@ function fold_bt_click()
               "computersChipsAtStartOfHand": com_start_chips,
               "computersChipsAtEndOfHand": com_end_chips,
               "authToken": getCookie("authToken"),
+              "ResponseTimeMilliseconds": parseInt(timeDiff),
           }
       }),
   };

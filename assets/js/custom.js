@@ -70,7 +70,7 @@ $("#bt-signup").click(function(){
                 setCookie('StartingNumberChipsPlayer', response['StartingNumberChipsPlayer']);
                 setCookie('StartingNumberChipsComputer', response['StartingNumberChipsComputer']);
                 setCookie('authToken', parseInt(response['authToken']));
-                setCookie('Hands', JSON.stringify(response['Hands']));
+                localStorage.setItem('Hands', JSON.stringify(response['Hands']));
                 setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
                 setCookie('personalityQuestions', JSON.stringify(response['PersonalityQuestions']));
                 setCookie('PokerExperienceQuestions', JSON.stringify(response['PokerExperienceQuestions']));
