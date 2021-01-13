@@ -32,8 +32,6 @@ function getCookie(name) {
 }
 
 $.ready= function() {
-  if(getCookie("survey") != "0")
-    window.location.replace("../index.html");
   console.log("init()");
   $("#boardcard1").hide();
   $("#boardcard2").hide();
@@ -50,8 +48,10 @@ $.ready= function() {
   com_end_chips = com_start_chips;
   player_end_chips = player_start_chips;
   hand_index = parseInt(getCookie('lastHand')) - 1;
+  $('#cur_handNum').text(hand_index + 1);
+  $('#total_handNum').text(hands.length);
   if(hand_index >= hands.length)
-    window.location.replace("../pages/survey-page.html");
+    window.location.replace("../pages/thank.html");
   initialize_bet();
   new_round();
 }
@@ -382,17 +382,18 @@ function fold_bt_click()
 }
 function nexthand_bt_click() {
   if(player_end_chips == 0 || com_end_chips == 0) {
-    window.location.replace("../pages/survey-page.html");
+    window.location.replace("../pages/thank.html");
   } else {
     $("#bt_nexthand").hide();
     $("boardcard5").hide();
     $("#winpanel").hide();
     hand_index ++;
+    $('#cur_handNum').text(hand_index + 1);
     if(hand_index < hands.length) {
       initialize_bet();
       new_round();
     } else {
-      window.location.replace("../pages/survey-page.html");
+      window.location.replace("../pages/thank.html");
     }
   }
 }

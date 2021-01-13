@@ -96,7 +96,7 @@ function sendRequest(resultstr) {
         console.log(response);
         if(response['result'] == "Success")
         {
-            window.location.replace("../../pages/thank.html");
+            window.location.replace("../pages/instruction.html");
         }
         else
             window.alert(response['result']);

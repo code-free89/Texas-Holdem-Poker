@@ -102,7 +102,7 @@ $("#bt-signup").click(function(){
                 setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
                 setCookie('personalityQuestions', JSON.stringify(response['PersonalityQuestions']));
                 setCookie('PokerExperienceQuestions', JSON.stringify(response['PokerExperienceQuestions']));
-                window.location.replace("poker.html");
+                window.location.replace("survey-page.html");
             }
         });
     }
@@ -138,7 +138,7 @@ $("#bt-login").click(function(){
             setCookie('lastHand', parseInt(response['lastHandPlayed']) + 1);
             setCookie('personalityQuestions', JSON.stringify(response['PersonalityQuestions']));
             setCookie('PokerExperienceQuestions', JSON.stringify(response['PokerExperienceQuestions']));
-            window.location.replace("poker.html");
+            window.location.replace("survey-page.html");
         }
         else
             window.alert(response['result']);
